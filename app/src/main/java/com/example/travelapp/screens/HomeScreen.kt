@@ -46,6 +46,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.travelapp.R
+import com.example.travelapp.data.Place
 import com.example.travelapp.navigations.Routes
 
 @Composable
@@ -137,13 +138,19 @@ fun HomeScreen(navController: NavHostController) {
         }
         Spacer(modifier = Modifier.height(20.dp))
         LazyRow {
-            val dummyImageResIds = listOf(
-                R.drawable.nature,
-                R.drawable.nature,
-                R.drawable.nature
+            val places = listOf(
+                Place(R.drawable.nature2, "Tokyo", "Mount Fuji", "4.5"),
+                Place(R.drawable.nature, "Chattogram", "Bandarban", "4.7"),
+                Place(R.drawable.nature3, "Sylhet", "Jaflang", "4.6")
             )
-            items(dummyImageResIds) { imageResId ->
-                ImageCard(imageResId = imageResId, navController = navController)
+            items(places) { place ->
+                ImageCard(
+                    imageResId = place.imageResId,
+                    location = place.location,
+                    place = place.place,
+                    rating = place.rating,
+                    navController = navController
+                )
                 Spacer(modifier = Modifier.width(16.dp))
             }
         }
@@ -152,7 +159,13 @@ fun HomeScreen(navController: NavHostController) {
 
 
 @Composable
-private fun ImageCard(imageResId: Int = android.R.drawable.ic_menu_gallery, navController: NavHostController) {
+private fun ImageCard(
+    imageResId: Int = android.R.drawable.ic_menu_gallery,
+    location: String,
+    place: String,
+    rating: String,
+    navController: NavHostController
+) {
     Box(
         modifier = Modifier
             .width(300.dp)
@@ -167,7 +180,7 @@ private fun ImageCard(imageResId: Int = android.R.drawable.ic_menu_gallery, navC
                 .fillMaxSize()
                 .graphicsLayer(alpha = 0.8f)
                 .clickable {
-                    navController.navigate(Routes.PLACE_DETAILS_SCREEN)
+                    navController.navigate("${Routes.PLACE_DETAILS_SCREEN}/${place}/${location}/${rating}/${imageResId}")
                 }
         )
         Box(
@@ -216,14 +229,14 @@ private fun ImageCard(imageResId: Int = android.R.drawable.ic_menu_gallery, navC
                         verticalAlignment = Alignment.Bottom
                     ) {
                         Text(
-                            text = "Mount Fuji,",
+                            text = place,
                             color = Color.White,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         Text(
-                            text = "Tokyo",
+                            text = location,
                             color = Color.White,
                             fontSize = 14.sp,
                             modifier = Modifier.padding(end = 8.dp)
@@ -247,7 +260,7 @@ private fun ImageCard(imageResId: Int = android.R.drawable.ic_menu_gallery, navC
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Tokyo",
+                                text = location,
                                 color = Color.LightGray,
                                 fontSize = 14.sp,
                                 modifier = Modifier.padding(end = 8.dp)
@@ -264,7 +277,7 @@ private fun ImageCard(imageResId: Int = android.R.drawable.ic_menu_gallery, navC
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "4.5",
+                                text = rating,
                                 color = Color.White,
                                 fontSize = 12.sp,
                                 modifier = Modifier.padding(end = 8.dp)

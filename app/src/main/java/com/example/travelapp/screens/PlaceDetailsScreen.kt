@@ -40,11 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.travelapp.R
 
 @Composable
-fun PlaceDetailsScreen(navController: NavHostController) {
+fun PlaceDetailsScreen(place: String?, location: String?, rating: String?, imageResId: Int?, navController: NavHostController) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -53,7 +52,13 @@ fun PlaceDetailsScreen(navController: NavHostController) {
                 .fillMaxSize()
                 .padding(horizontal = 20.dp, vertical = 12.dp)
         ) {
-            ImageCard(navController)
+            ImageCard(
+                navController = navController,
+                imageResId = imageResId ?: R.drawable.nature2,
+                location = location ?: "",
+                place = place ?: "",
+                rating = rating ?: ""
+            )
             Spacer(modifier = Modifier.height(20.dp))
             Row(
                 verticalAlignment = Alignment.Bottom
@@ -163,14 +168,20 @@ fun PlaceDetailsScreen(navController: NavHostController) {
 
 
 @Composable
-private fun ImageCard(navController: NavHostController) {
+private fun ImageCard(
+    navController: NavHostController,
+    imageResId: Int = R.drawable.nature2,
+    location: String,
+    place: String,
+    rating: String,
+) {
     Box(
         modifier = Modifier
             .height(400.dp)
             .clip(shape = RoundedCornerShape(15.dp))
     ) {
         Image(
-            painter = painterResource(id = R.drawable.nature),
+            painter = painterResource(id = imageResId),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -180,7 +191,7 @@ private fun ImageCard(navController: NavHostController) {
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(8.dp)
+                .padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
             Box(
                 modifier = Modifier
@@ -201,7 +212,7 @@ private fun ImageCard(navController: NavHostController) {
         Box(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(8.dp)
+                .padding(horizontal = 8.dp, vertical = 16.dp)
                 .clickable {
                     navController.popBackStack()
                 }
@@ -247,14 +258,14 @@ private fun ImageCard(navController: NavHostController) {
                         verticalAlignment = Alignment.Bottom
                     ) {
                         Text(
-                            text = "Mount Fuji,",
+                            text = place,
                             color = Color.White,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         Text(
-                            text = "Tokyo",
+                            text = location,
                             color = Color.White,
                             fontSize = 14.sp,
                             modifier = Modifier.padding(end = 8.dp)
@@ -278,7 +289,7 @@ private fun ImageCard(navController: NavHostController) {
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Tokyo",
+                                text = location,
                                 color = Color.LightGray,
                                 fontSize = 14.sp,
                                 modifier = Modifier.padding(end = 8.dp)
@@ -294,7 +305,7 @@ private fun ImageCard(navController: NavHostController) {
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "4.5",
+                                text = rating,
                                 color = Color.White,
                                 fontSize = 12.sp,
                                 modifier = Modifier.padding(end = 8.dp)
@@ -311,5 +322,5 @@ private fun ImageCard(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun PlaceDetailsScreenPreview() {
-    PlaceDetailsScreen(rememberNavController())
+//    PlaceDetailsScreen(place: String?, location: String?, rating: String?, imageResId: Int?, rememberNav)
 }
